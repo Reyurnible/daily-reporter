@@ -1,0 +1,68 @@
+apply plugin: 'kotlin-platform-jvm'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
+sourceSets {
+    main {
+        java.srcDirs += 'src/main/java'
+        kotlin.srcDirs += 'src/main/kotlin'
+    }
+    test {
+        java.srcDirs += "src/test/java"
+        kotlin.srcDirs += "src/test/kotlin"
+    }
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven { url "http://dl.bintray.com/kotlin/ktor" }
+    maven { url "https://dl.bintray.com/kotlin/kotlinx" }
+    maven { url "https://dl.bintray.com/kotlin/squash" }
+}
+
+def host = "netty"
+
+def ktor_version = '0.9.0'
+def squash_version = '0.2.3'
+
+dependencies {
+    // Kotlin
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    // Framework : Ktor
+    compile "io.ktor:ktor-server-core:$ktor_version"
+    compile "io.ktor:ktor-server-${host}:$ktor_version"
+    compile "io.ktor:ktor-server-sessions:$ktor_version"
+    compile "io.ktor:ktor-html-builder:$ktor_version"
+    // JSON Mapping : Gson
+    compile "io.ktor:ktor-gson:$ktor_version"
+    // DB Access : Squash
+    compile "org.jetbrains.squash:squash:$squash_version"
+    compile "org.jetbrains.squash:squash-h2:$squash_version"
+    // HikariCP
+    compile "com.zaxxer:HikariCP:2.7.4"
+    // Logging
+    compile "ch.qos.logback:logback-classic:1.2.1"
+    // Joda Time
+    compile "joda-time:joda-time:2.9.9"
+    // Test Compile
+    testCompile "junit:junit:4.12"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test:$kotlin_version"
+}
+
+mainClassName = "io.ktor.server.${host}.DevelopmentEngine"
