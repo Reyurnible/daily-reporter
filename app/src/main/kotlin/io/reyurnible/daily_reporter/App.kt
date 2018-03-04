@@ -14,7 +14,7 @@ import io.ktor.http.ContentType
 import io.ktor.routing.Routing
 import io.ktor.sessions.Sessions
 import io.ktor.sessions.cookie
-import io.reyurnible.daily_reporter.infra.Database
+import io.reyurnible.daily_reporter.infra.AppDatabase
 
 val gson = GsonBuilder().setPrettyPrinting().serializeNulls().create()
 
@@ -22,7 +22,7 @@ class App {
 
     // Call from application.conf setting
     fun Application.install() {
-        val database = Database(this)
+        val database = AppDatabase(this)
 
         install(DefaultHeaders)
         install(CallLogging)
